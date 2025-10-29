@@ -1,0 +1,90 @@
+---
+title: Análisis de datos con R
+subtitle: "Actividad - el paquete dplyr"
+author: "sulami kaulany hernandez luna"
+date: "22/10/2025"
+output:
+    prettydoc::html_pretty:
+      theme: hpstr
+      highlight: vignette
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = TRUE,
+	warning = TRUE)
+library(dplyr)
+```
+
+# Introducción a dplyr
+
+El paquete dplyr simplifica los desafíos de manipulación de datos. Proporciona "verbos" simples, que son funciones que corresponden a las tareas más comunes. Todos los verbos toman un data.frame o tibble (como el conjunto de datos starwars) como primer argumento. Utilizamos el operador pipe (`%>%`) para encadenar múltiples operaciones, permitiendo leer el código de izquierda a derecha.
+
+
+## Actividad: Filtrado de filas con ´filter()´
+
+
+El verbo `filter()` elige filas basándose en los valores de las columnas.
+
+- Utilice `filter()` para seleccionar únicamente los personajes (starwars) cuya especie (species) sea "Droid" y cuya altura (height) sea menor a 150. Complete el argumento de la columna y el valor.
+
+```{r, eval=F}
+starwars %>%
+  filter(species == "Droid", height < 150)
+```
+
+
+## Actividad: Ordenamiento de filas con `arrange()`
+
+El verbo `arrange()` reordena las filas. Se puede usar `desc()` para ordenar de forma descendente.
+ - Ordene el conjunto de datos starwars de la Tarea 1 por masa (mass) de forma descendente. Complete la función para el ordenamiento descendente.
+
+```{r, eval=F}
+starwars %>%
+  filter(species == "Droid", height < 150) %>%
+  arrange(desc(mass))
+```
+
+Acitivdad: Creación de nuevas columnas con `mutate()`
+
+El verbo `mutate()` añade nuevas columnas que son funciones de las columnas existentes. Permite referirse a columnas que acaba de crear.
+
+ - Utilice `mutate()` para crear dos nuevas columnas: altura_cm (valor de height multiplicado por 1) y masa_gr (valor de mass multiplicado por 1000). Complete los multiplicadores.
+ 
+```{r, eval=F}
+starwars %>%
+  mutate(
+    altura_cm = height * 1,
+    masa_gr = mass * 1000
+)
+```
+
+
+## Actividad: Selección de columnas con `select()`
+
+El verbo `select()` cambia si una columna está incluida o no. Existen funciones auxiliares (helper functions) como `ends_with()` para coincidir con bloques de variables que cumplen algún criterio.
+ - Tome el conjunto de datos starwars y utilice `select()` para mostrar solo las columnas name, height, y todas las columnas que terminan con "color". Complete el nombre del helper de selección.
+ 
+
+```{r, eval=F}
+starwars %>%
+  select(name, height, starts_with("#CD3333"))
+```
+
+
+
+Actividad: Agrupación y Resumen (`group_by()` y `summarise()`)
+
+El verbo `summarise()` colapsa un data frame a una sola fila, pero es más útil cuando se combina con `group_by()`.
+
+- Agrupe el conjunto de datos starwars por planeta natal (homeworld). Luego, utilice `summarise()` para calcular el número total de personajes en cada planeta. Complete el nombre de la variable de agrupación y la función para contar filas (`n()`).
+
+```{r, eval=F}
+starwars %>%
+  group_by(homeworld) %>%
+  summarise(
+    total_personajes = n()
+  )
+```
+
